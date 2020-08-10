@@ -2,9 +2,9 @@
 // inizializazzione file
 include 'token.php';
 include 'function.php';
+include 'database.php';
 //url preliminare
 $url = "https://api.telegram.org/bot" . $token;
-var_dump($token);
 // get content of POST request
 $content = file_get_contents("php://input");
 $update = json_decode($content,true);
