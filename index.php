@@ -12,12 +12,13 @@ $update = json_decode($content,true);
 // variabili
 $chat = $update["message"]["chat"]["id"];
 $text = $update["message"]["text"];
+$nome = $update["message"]["from"]["first_name"];
 
 // comandi
 if ($text == "/start") {
-	sendMessage($chat,"*benvenuto*");
+	sendMessage($chat,"*benvenuto*",false);
 }
-sendMessage($chat,"```$content```");
+sendMessage($chat,"```$content```",false);
 $file = "input.json";
 $f2 = fopen($file, 'w');
 fwrite($f2, $content);
