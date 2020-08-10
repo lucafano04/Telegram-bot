@@ -1,0 +1,2 @@
+{"update_id":221071048,
+"message":{"message_id":1861,"from":{"id":327564394,"is_bot":false,"first_name":"Luca","last_name":"Facchini","username":"Lucafano04","language_code":"it"},"chat":{"id":327564394,"first_name":"Luca","last_name":"Facchini","username":"Lucafano04","type":"private"},"date":1597070078,"text":"/start","entities":[{"offset":0,"length":6,"type":"bot_command"}]}}
