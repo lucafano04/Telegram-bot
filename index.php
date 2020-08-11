@@ -27,20 +27,19 @@ if (isset($update["callback_query"]["message"]["chat"]["id"])) {
 include 'database.php';
 
 
-
+//tastiere
 $keyboard = array(
         array(
           array('text'=>'text1','callback_data'=>"1")
           ,array('text'=>'text2','callback_data'=>"2")
         ),
         array(
-          array('text'=>'start','callback_data'=>"4")
+          array('text'=>'start','callback_data'=>"start")
         )
       );
 $keyboard = array(
     'inline_keyboard' => $keyboard
 );
-
 
 // comandi
 if ($text == "/start") {
@@ -52,7 +51,10 @@ if ($text == "/info") {
 if ($text == "/key") {
 	sendMessage($chat, "Tastiera",$keyboard);
 }
-sendMessage($chat,"```$content```");
+if ($data == "start") {
+	editMessageText($chat,$msg_id,"*Benvenuto*");
+}
+//sendMessage($chat,"```$content```");
 $file = "input.json";
 $f2 = fopen($file, 'w');
 fwrite($f2, $content);
