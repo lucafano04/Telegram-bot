@@ -28,31 +28,50 @@ include 'database.php';
 
 
 //tastiere
-$keyboard = array(
+$startk = 
+array(
+	'inline_keyboard' => array(
         array(
-          array('text'=>'text1','callback_data'=>"1")
-          ,array('text'=>'text2','callback_data'=>"2")
+        	array('text'=>'➕Aggiungimi ad un Gruppo➕','url'=>"t.me/Test_LFS_bot?startgroup=group")
         ),
         array(
-          array('text'=>'start','callback_data'=>"start")
-        )
-      );
-$keyboard = array(
-    'inline_keyboard' => $keyboard
+        	array('text'=>'👥 Gruppo','url'=>"https://t.me/joinchat/NNggCUfeHDjc7cfq1hUD-Q"),
+        	array('text'=>'📣 Canale','url'=>"https://t.me/joinchat/AAAAAEZSB9SLlsS_qVLouQ"),
+        	array('text'=>'📖 Guida','url'=>"t.me/test_lfs_bot"),
+        ),
+        array(
+        	array('text'=>'🆘 Supporto','callback_data'=>'suporto'),
+        	array('text'=>'Informazioni ℹ️','callback_data'=>'info'),
+        ),
+    )
+);
+$suppk =
+array(
+	'inline_keyboard' => array(
+		array(
+			array('text'=>'🆘 Supporto in chat', 'callback_data'=>'chat'),
+		),
+		array(
+			array('text'=>'📖 Comandi del bot','callback_data'=>'comandi'),
+		),
+		array(
+			array('text'=>'📖 Guida','url'=>'t.me/test_lfs_bot'),
+		),
+		array(
+			array('text'=>'🔙 indietro','callback_data'=>'start'),
+		),
+	)
 );
 
 // comandi
 if ($text == "/start") {
-	sendMessage($chat,"*benvenuto*");
-}
-if ($text == "/info") {
-	sendMessage($chat, "*INFO*\nID: $id\nNome: $nome\nCognome: $cognome\nUsername: @$username)");
-}
-if ($text == "/key") {
-	sendMessage($chat, "Tastiera",$keyboard);
+	sendMessage($chat,"*benvenuto*", $startk);
 }
 if ($data == "start") {
-	editMessageText($chat,$msg_id,"*Benvenuto*");
+	editMessageText($chat,$msg_id,"*Benvenuto*",$startk);
+}
+if ($data == "suporto") {
+	editMessageText($chat,$msg_id,"Supporto",$suppk);
 }
 //sendMessage($chat,"```$content```");
 $file = "input.json";
