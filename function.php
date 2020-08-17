@@ -26,4 +26,13 @@ function ForwardMessage($chat_id,$from_chat_id,$message_id)
 	global $url;
 	return file_get_contents($url."/ForwardMessage?chat_id=".$chat_id."&from_chat_id=".$from_chat_id."&message_id=".$message_id);
 }
+function getChatAdministrators($chat_id){
+	global $url;
+	return file_get_contents($url."/getChatAdministrators?chat_id=".$chat_id);
+}
+function kickChatMember($chat_id,$user_id,$until_date = 0)
+{
+	global $url;
+	return file_get_contents($url."/kickChatMember?chat_id=".$chat_id."&user_id=".$user_id."&until_date=".$until_date);
+}
 ?>
