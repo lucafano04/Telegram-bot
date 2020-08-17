@@ -30,6 +30,8 @@ if (isset($update["callback_query"]["message"]["chat"]["id"])) {
 	$username = $update["callback_query"]["from"]["username"];
 }
 include 'database.php';
+//messaggi
+$info_msg = "Fux Help è stato sviluppato in PHP (Data)!\nStaff\n• @JeckoG\n\nSviluppato da @Lucafano04";
 //tastiere
 $startk = 
 array(
@@ -40,7 +42,7 @@ array(
         array(
         	array('text'=>'👥 Gruppo','url'=>"https://t.me/joinchat/NNggCUfeHDjc7cfq1hUD-Q"),
         	array('text'=>'📣 Canale','url'=>"https://t.me/joinchat/AAAAAEZSB9SLlsS_qVLouQ"),
-        	array('text'=>'📖 Guida','url'=>"t.me/test_lfs_bot"),
+        	array('text'=>'📖 Guida','url'=>"https://telegra.ph/COME-AGGIUNGERE-IL-TUO-GRUPPOCANALE-ALLA-COMMUNITY-08-13"),
         ),
         array(
         	array('text'=>'🆘 Supporto','callback_data'=>'suporto'),
@@ -55,10 +57,7 @@ array(
 			array('text'=>'🆘 Supporto in chat', 'callback_data'=>'chat'),
 		),
 		array(
-			array('text'=>'📖 Comandi del bot','callback_data'=>'comandi'),
-		),
-		array(
-			array('text'=>'📖 Guida','url'=>'t.me/test_lfs_bot'),
+			array('text'=>'📖 Guida','url'=>'https://telegra.ph/COME-AGGIUNGERE-IL-TUO-GRUPPOCANALE-ALLA-COMMUNITY-08-13'),
 		),
 		array(
 			array('text'=>'🔙 indietro','callback_data'=>'start'),
@@ -83,16 +82,7 @@ array(
 );
 //parte pvt
 if ($chat > 0) {	
-	//live chat
-	if ($info['page'] == "chat"&&$content) {
-		foreach($admin as $ad) {
-    		$res = ForwardMessage($ad, $chat, $msg_id);
-    		$res = json_decode($res,true);
-    		if (!$res['result']['forward_from']['id']) {
-    			sendMessage($ad,"MESSAGGIO INOLTRATO DA:\n$nome\nID: #id$id\nRispondi a questo");
-    		}
-  		}
-  	}     
+	//live chat     
 	if(in_array($id, $admin) and $update['message']['reply_to_message']['forward_from']['id'] and $text) {
   		sendMessage($update['message']['reply_to_message']['forward_from']['id'], 'Risposta dagli Admins:' . "\n" . $text);
   		sendMessage($chat, 'Inviato.');
@@ -101,16 +91,6 @@ if ($chat > 0) {
 		$user = substr($text_reply,$ent_offset + 3,$ent_length - 3);
 		sendMessage($user,'Risposta dagli Admins:' . "\n" . $text);
 		sendMessage($chat, 'Inviato.');
-	}
-	// comandi
-	if ($text == "/start") {
-		sendMessage($chat,"*benvenuto*", $startk);
-	}
-	if ($data == "start") {
-		editMessageText($chat,$msg_id,"*Benvenuto*",$startk);
-	}
-	if ($data == "suporto") {
-		editMessageText($chat,$msg_id,"Supporto",$suppk);
 	}
 	if ($data == "chat") {
 		$sql  = 'UPDATE `gest` SET `page` = \'chat\' WHERE `gest`.`ID` = '.$id;
@@ -122,6 +102,57 @@ if ($chat > 0) {
 		if ($conn->query($sql) === TRUE){}
 		sendMessage($chat,"Sei uscito dalla chat",$backk);
 		editMessageText($chat,$msg_id,"Sei uscito dalla chat",$backk);
+		$info['page'] = "";
+	}
+	if ($info['page'] == "chat"&&$content) {
+		foreach($admin as $ad) {
+    		$res = ForwardMessage($ad, $chat, $msg_id);
+    		$res = json_decode($res,true);
+    		if (!$res['result']['forward_from']['id']) {
+    			sendMessage($ad,"MESSAGGIO INOLTRATO DA:\n$nome\nID: #id$id\nRispondi a questo");
+    		}
+  		}
+  	}
+	// comandi
+	if ($text == "/start") {
+		sendMessage($chat,$info_msg, $startk);
+	}
+	if ($data == "start") {
+		editMessageText($chat,$msg_id,$info_msg,$startk);
+	}
+	if ($data == "suporto") {
+		editMessageText($chat,$msg_id,$info_msg,$suppk);
+	}
+	if ($data == "info") {
+		editMessageText($chat,$msg_id,$info_msg,$backk);	
+	}
+}
+if ($chat < 0) {
+	$admin = json_decode(getChatAdministrators($chat),true);
+	$admin = $admin['result'];
+	$ads = array();
+	foreach ($res as $ad) {
+		$ads[] = $ad['user']['id'];
+	}
+	if ($text == "/ban") {
+		$user_reply = $update['message']['reply_to_message']['from']['id'];
+		$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
+		$ok = json_decode(kickChatMember($chat,$user_reply),true);
+		if($ok['ok'] == "true"){
+				sendMessage($chat, "$nome_reply [ `$user_reply` ] Bannato");
+		}else{
+			sendMessage($chat, "Errore\n".json_encode($ok));
+		}	
+	}
+	if ($text == "/kick") {
+		$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
+		$user_reply = $update['message']['reply_to_message']['from']['id'];
+		$ok = json_decode(kickChatMember($chat,$user_reply,31),true);
+		if($ok['ok'] == "true"){
+			sendMessage($chat, "$nome_reply [ `$user_reply` ] Kikkato");
+		}else{
+			sendMessage($chat, "Errore\n".json_encode($ok));
+		}	
 	}
 }
 $file = "input.json";
