@@ -31,7 +31,9 @@ if (isset($update["callback_query"]["message"]["chat"]["id"])) {
 }
 include 'database.php';
 //messaggi
-$info_msg = "Fux Help è stato sviluppato in PHP (Data)!\nStaff\n• @JeckoG\n\nSviluppato da @Lucafano04";
+$info_msg = "Fux Help è stato sviluppato in PHP (Data)!\nStaff\n• @NonProvareaTaggarmi\n\nSviluppato da @Lucafano04";
+$start_msg = "Ciao $nome\ne benvenuto nel bot Fux Help\n\n✅Aggiungendo questo bot nel tuo gruppo puoi gestire la chat in maniera molto semplice!\n\n👉 Aggiungimi in un gruppo e impostami come Amministratore!";
+$dona_msg = "Questo all’interno:\n\n❤️Supporta il bot con una piccola donazione volontaria\n\n💬Mail paypal: luxurynetworkita@gmail.com";
 //tastiere
 $startk = 
 array(
@@ -45,24 +47,13 @@ array(
         	array('text'=>'📖 Guida','url'=>"https://telegra.ph/COME-AGGIUNGERE-IL-TUO-GRUPPOCANALE-ALLA-COMMUNITY-08-13"),
         ),
         array(
-        	array('text'=>'🆘 Supporto','callback_data'=>'suporto'),
+        	array('text'=>'🆘 Supporto','callback_data'=>'chat'),
         	array('text'=>'Informazioni ℹ️','callback_data'=>'info'),
         ),
+        array(
+        	array('text'=>'❤️Dona','callback_data'=>'dona')
+        ),
     )
-);
-$suppk =
-array(
-	'inline_keyboard' => array(
-		array(
-			array('text'=>'🆘 Supporto in chat', 'callback_data'=>'chat'),
-		),
-		array(
-			array('text'=>'📖 Guida','url'=>'https://telegra.ph/COME-AGGIUNGERE-IL-TUO-GRUPPOCANALE-ALLA-COMMUNITY-08-13'),
-		),
-		array(
-			array('text'=>'🔙 indietro','callback_data'=>'start'),
-		),
-	)
 );
 $exitk =
 array(
@@ -115,44 +106,62 @@ if ($chat > 0) {
   	}
 	// comandi
 	if ($text == "/start") {
-		sendMessage($chat,$info_msg, $startk);
+		sendMessage($chat,$start_msg, $startk);
 	}
 	if ($data == "start") {
-		editMessageText($chat,$msg_id,$info_msg,$startk);
-	}
-	if ($data == "suporto") {
-		editMessageText($chat,$msg_id,$info_msg,$suppk);
+		editMessageText($chat,$msg_id,$start_msg,$startk);
 	}
 	if ($data == "info") {
 		editMessageText($chat,$msg_id,$info_msg,$backk);	
 	}
+	if ($data == "dona") {
+		editMessageText($chat,$msg_id,$dona_msg,$backk);
+	}
+	$texta = explode(" ", $text);
+	if ($texta[0] == "/admin") {
+		sendMessage($chat,"admin");
+	}
 }
+//gruppi
 if ($chat < 0) {
 	$admin = json_decode(getChatAdministrators($chat),true);
 	$admin = $admin['result'];
 	$ads = array();
-	foreach ($res as $ad) {
+	foreach ($admin as $ad) {
 		$ads[] = $ad['user']['id'];
 	}
-	if ($text == "/ban") {
-		$user_reply = $update['message']['reply_to_message']['from']['id'];
-		$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
-		$ok = json_decode(kickChatMember($chat,$user_reply),true);
-		if($ok['ok'] == "true"){
-				sendMessage($chat, "$nome_reply [ `$user_reply` ] Bannato");
-		}else{
-			sendMessage($chat, "Errore\n".json_encode($ok));
-		}	
-	}
-	if ($text == "/kick") {
-		$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
-		$user_reply = $update['message']['reply_to_message']['from']['id'];
-		$ok = json_decode(kickChatMember($chat,$user_reply,31),true);
-		if($ok['ok'] == "true"){
-			sendMessage($chat, "$nome_reply [ `$user_reply` ] Kikkato");
-		}else{
-			sendMessage($chat, "Errore\n".json_encode($ok));
-		}	
+	if(in_array($id, $ads)){
+		if ($text == "/ban") {
+			$user_reply = $update['message']['reply_to_message']['from']['id'];
+			$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
+			$ok = json_decode(kickChatMember($chat,$user_reply),true);
+			if($ok['ok'] == "true"){
+					sendMessage($chat, "$nome_reply [ '$user_reply' ] Bannato");
+			}else{
+				sendMessage($chat, "Errore");
+			}	
+		}
+		if ($text == "/kick") {
+			$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
+			$user_reply = $update['message']['reply_to_message']['from']['id'];
+			$ok = json_decode(kickChatMember($chat,$user_reply,31),true);
+			if($ok['ok'] == "true"){
+				sendMessage($chat, "$nome_reply [ '$user_reply' ] Kikkato");
+			}else{
+				sendMessage($chat, "Errore");
+			}	
+		}
+		if ($text == "/mute") {
+			$perm = array("can_send_messages"=>false);
+			$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
+			$user_reply = $update['message']['reply_to_message']['from']['id'];
+			$ok = json_decode(restrictChatMember($chat,$id,$perm),true);
+			if($ok['ok'] == "true"){
+				sendMessage($chat, "$nome_reply [ '$user_reply' ] Mutato");
+			}else{
+				sendMessage($chat, "Errore");
+			}
+		}
 	}
 }
 $file = "input.json";

@@ -18,18 +18,16 @@ if ($result->num_rows > 0) {
   }
 } else {
   	$sql = "INSERT INTO `gest` (`ID`, `Username`, `Nome`, `Cognome`, `page`) VALUES ('$id', '$username', '$nome', '$cognome', '')";
-  	sendMessage($chat,"User Not Found\n$conn->error");
-	if ($conn->query($sql) === TRUE) {
-	}
+	if ($conn->query($sql) === TRUE) {}else{
+    sendMessage($chat,"Utente non Creato\n$conn->error");
+  }
 }
 $admin = array();
 $sql  = 'SELECT * FROM `bot`.`gest` WHERE `Admin` = "Yes"';
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
-    $admin[] = (int)
-    $row['ID'];
+    $admin[] = (int)$row['ID'];
   }
 }
-var_dump($admin)
 ?>

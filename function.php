@@ -35,4 +35,15 @@ function kickChatMember($chat_id,$user_id,$until_date = 0)
 	global $url;
 	return file_get_contents($url."/kickChatMember?chat_id=".$chat_id."&user_id=".$user_id."&until_date=".$until_date);
 }
+function unbanChatMember($chat_id,$user_id)
+{
+	global $url;
+	return file_get_contents($url."/unbanChatMember?chat_ixd=".$chat_id."&user_id=".$user_id);
+}
+function restrictChatMember($chat_id,$user_id,$permissions)
+{
+	global $url;
+	$permissions2 = json_encode($permissions);
+	return file_get_contents($url."/restrictChatMember?chat_id=".$chat_id."&user_id=".$user_id."&permissions=".$permissions2);
+}
 ?>
