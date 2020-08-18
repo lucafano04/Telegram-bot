@@ -152,15 +152,19 @@ if ($chat < 0) {
 			}	
 		}
 		if ($text == "/mute") {
-			$perm = array("can_send_messages"=>false);
+			$perm = '{"can_send_messages":false}';
 			$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
 			$user_reply = $update['message']['reply_to_message']['from']['id'];
-			$ok = json_decode(restrictChatMember($chat,$id,$perm),true);
+			$ok = json_decode(restrictChatMember($chat,$user_reply,$perm),true);
 			if($ok['ok'] == "true"){
 				sendMessage($chat, "$nome_reply [ '$user_reply' ] Mutato");
 			}else{
 				sendMessage($chat, "Errore");
 			}
+		}
+		if ($text == "/chat") {
+			$test = file_get_contents($url."/getChat?chat_id=".$chat);
+			sendMessage($chat,$test);
 		}
 	}
 }

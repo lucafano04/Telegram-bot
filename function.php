@@ -43,7 +43,6 @@ function unbanChatMember($chat_id,$user_id)
 function restrictChatMember($chat_id,$user_id,$permissions)
 {
 	global $url;
-	$permissions2 = json_encode($permissions);
-	return file_get_contents($url."/restrictChatMember?chat_id=".$chat_id."&user_id=".$user_id."&permissions=".$permissions2);
+	return file_get_contents($url."/restrictChatMember?chat_id=".$chat_id."&user_id=".$user_id."&permissions=".$permissions);
 }
 ?>
