@@ -117,9 +117,22 @@ if ($chat > 0) {
 	if ($data == "dona") {
 		editMessageText($chat,$msg_id,$dona_msg,$backk);
 	}
-	$texta = explode(" ", $text);
-	if ($texta[0] == "/admin") {
-		sendMessage($chat,"admin");
+	if(in_array($chat, $admin)){
+		$texta = explode(" ", $text);
+		if ($texta[0] == "/admin") {
+			$user_u = $texta[1];
+			$sql  = 'UPDATE `gest` SET `Admin` = \'Yes\' WHERE `gest`.`Username` = "'.$user_u.'"';
+			if ($conn->query($sql) === TRUE) {
+				sendMessage($chat, "@$user_u reso admin");
+			}
+		}
+		if ($texta[0] == "/unadmin") {
+			$user_u = $texta[1];
+			$sql  = 'UPDATE `gest` SET `Admin` = \'No\' WHERE `gest`.`Username` = "'.$user_u.'"';
+			if ($conn->query($sql) === TRUE) {
+				sendMessage($chat, "@$user_u tolto da 	admin");
+			}
+		}
 	}
 }
 //gruppi
@@ -130,6 +143,7 @@ if ($chat < 0) {
 	foreach ($admin as $ad) {
 		$ads[] = $ad['user']['id'];
 	}
+	//Comandi Amministratori
 	if(in_array($id, $ads)){
 		if ($text == "/ban") {
 			$user_reply = $update['message']['reply_to_message']['from']['id'];
@@ -163,7 +177,7 @@ if ($chat < 0) {
 			}
 		}
 		if ($text == "/unmute") {
-			$perm = '{"can_send_messages":true}';
+			$perm = '{"can_send_messages":true,"can_send_media_messages":true,"can_send_polls":true,"can_send_other_messages":true,"can_add_web_page_previews":true,"can_invite_users":true}';
 			$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
 			$user_reply = $update['message']['reply_to_message']['from']['id'];
 			$ok = json_decode(restrictChatMember($chat,$user_reply,$perm),true);
@@ -184,6 +198,11 @@ if ($chat < 0) {
 		}
 		if ($text == "/unfissa") {
 			unpinChatMessage($chat);
+			deleteMessage($chat,$msg_id);
+		}
+		if ($text == "/del") {
+			$msg_reply_id = $update['message']['reply_to_message']['message_id'];
+			deleteMessage($chat,$msg_reply_id);
 			deleteMessage($chat,$msg_id);
 		}
 	}
