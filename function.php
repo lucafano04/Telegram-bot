@@ -45,4 +45,19 @@ function restrictChatMember($chat_id,$user_id,$permissions)
 	global $url;
 	return file_get_contents($url."/restrictChatMember?chat_id=".$chat_id."&user_id=".$user_id."&permissions=".$permissions);
 }
+function pinChatMessage($chat_id,$message_id,$disable_notification = false)
+{
+	global $url;
+	return file_get_contents($url."/pinChatMessage?chat_id=".$chat_id."&message_id=".$message_id."&disable_notification=".$disable_notification);
+}
+function deleteMessage($chat_id,$message_id)
+{
+	global $url;
+	return file_get_contents($url."/deleteMessage?chat_id=".$chat_id."&message_id=".$message_id);
+}
+function unpinChatMessage($chat_id)
+{
+	global $url;
+	return file_get_contents($url."/unpinChatMessage?chat_id=".$chat_id);
+}
 ?>

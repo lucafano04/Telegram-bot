@@ -162,14 +162,36 @@ if ($chat < 0) {
 				sendMessage($chat, "Errore");
 			}
 		}
+		if ($text == "/unmute") {
+			$perm = '{"can_send_messages":true}';
+			$nome_reply = $update['message']['reply_to_message']['from']['first_name'];
+			$user_reply = $update['message']['reply_to_message']['from']['id'];
+			$ok = json_decode(restrictChatMember($chat,$user_reply,$perm),true);
+			if($ok['ok'] == "true"){
+				sendMessage($chat, "$nome_reply [ '$user_reply' ] smutato");
+			}else{
+				sendMessage($chat, "Errore");
+			}
+		}
 		if ($text == "/chat") {
 			$test = file_get_contents($url."/getChat?chat_id=".$chat);
 			sendMessage($chat,$test);
 		}
+		if ($text == "/fissa") {
+			$msg_reply_id = $update['message']['reply_to_message']['message_id'];
+			pinChatMessage($chat,$msg_reply_id,false);
+			deleteMessage($chat,$msg_id);
+		}
+		if ($text == "/unfissa") {
+			unpinChatMessage($chat);
+			deleteMessage($chat,$msg_id);
+		}
 	}
 }
-$file = "input.json";
-$f2 = fopen($file, 'w');
-fwrite($f2, $content);
-fclose($f2);
+if(isset($content)){
+	$file = "input.json";
+	$f2 = fopen($file, 'w');
+	fwrite($f2, $content);
+	fclose($f2);
+}
 ?>
