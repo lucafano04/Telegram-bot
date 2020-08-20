@@ -31,9 +31,9 @@ if (isset($update["callback_query"]["message"]["chat"]["id"])) {
 }
 include 'database.php';
 //messaggi
-$info_msg = "Fux Help è stato sviluppato in PHP (Data)!\nStaff\n• @NonProvareaTaggarmi\n\nSviluppato da @Lucafano04";
+$info_msg = "Fux Help è stato sviluppato in PHP 20/08/2020!\nStaff\n• @NonProvareaTaggarmi\n\nSviluppato da @Lucafano04";
 $start_msg = "Ciao $nome\ne benvenuto nel bot Fux Help\n\n✅Aggiungendo questo bot nel tuo gruppo puoi gestire la chat in maniera molto semplice!\n\n👉 Aggiungimi in un gruppo e impostami come Amministratore!";
-$dona_msg = "Questo all’interno:\n\n❤️Supporta il bot con una piccola donazione volontaria\n\n💬Mail paypal: luxurynetworkita@gmail.com";
+$dona_msg = "Questo all’interno:\n\n❤️Supporta il bot con una piccola donazione volontaria\n\n💬Mail paypal: luca.facchini.it@gmail.com";
 //tastiere
 $startk = 
 array(
