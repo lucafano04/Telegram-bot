@@ -30,4 +30,12 @@ if ($result->num_rows > 0) {
     $admin[] = (int)$row['ID'];
   }
 }
+$pro = array();
+$sql  = 'SELECT * FROM `bot`.`gest` WHERE `pro` = "Yes"';
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  while($row = $result->fetch_assoc()) {
+    $pro[] = (int)$row['ID'];
+  }
+}
 ?>

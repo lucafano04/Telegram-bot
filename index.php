@@ -130,7 +130,21 @@ if ($chat > 0) {
 			$user_u = $texta[1];
 			$sql  = 'UPDATE `gest` SET `Admin` = \'No\' WHERE `gest`.`Username` = "'.$user_u.'"';
 			if ($conn->query($sql) === TRUE) {
-				sendMessage($chat, "@$user_u tolto da 	admin");
+				sendMessage($chat, "@$user_u tolto da admin");
+			}
+		}
+		if ($texta[0] == "/pro") {
+			$user_u = $texta[1];
+			$sql  = 'UPDATE `gest` SET `pro` = \'Yes\' WHERE `gest`.`Username` = "'.$user_u.'"';
+			if ($conn->query($sql) === TRUE) {
+				sendMessage($chat, "@$user_u reso pro");
+			}
+		}
+		if ($texta[0] == "/unpro") {
+			$user_u = $texta[1];
+			$sql  = 'UPDATE `gest` SET `pro` = \'No\' WHERE `gest`.`Username` = "'.$user_u.'"';
+			if ($conn->query($sql) === TRUE) {
+				sendMessage($chat, "@$user_u tolto da pro");
 			}
 		}
 	}
@@ -204,6 +218,14 @@ if ($chat < 0) {
 			$msg_reply_id = $update['message']['reply_to_message']['message_id'];
 			deleteMessage($chat,$msg_reply_id);
 			deleteMessage($chat,$msg_id);
+		}
+		$texta = explode(" ", $text);
+		if ($texta[0] == "/annuncio") {
+			deleteMessage($chat,$msg_id);
+			sendMessage($chat,substr($text,10));
+		}
+		if (in_array($id, $pro)&&$text == ".pro") {
+			sendMessage($chat,"$nome è un pro perché ha donato al bot");
 		}
 	}
 }
