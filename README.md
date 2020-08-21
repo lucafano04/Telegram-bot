@@ -1,7 +1,7 @@
 # Telegram-bot
 ## Overwiew
 
-Questo è un bot che ti permetterà di programmate in PHP un bot standard
+Questo bot gestionale ti permetterà di gestire il tuo gruppo in tutta sicurezza. 
 
 ## Installation
 
